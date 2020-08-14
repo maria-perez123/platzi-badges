@@ -6,10 +6,19 @@ import { Link } from 'react-router-dom';
 import Badge from '../components/Badge';
 import DeleteBadgeModal from '../components/DeleteBadgeModal'
 
+function useIncreaseCount(max) {
+  const [count, setCount] = React.useState(0);
 
+  if (count > max) {
+    setCount(0);
+  }
+
+  return [count, setCount];
+}
 
 function BadgeDetails(props){
-const badge= props.badge;
+  const [count, setCount] = useIncreaseCount(4);
+  const badge= props.badge;
 return(
 <div>
         <div className="BadgeDetails__hero">
@@ -42,6 +51,14 @@ return(
               <h2>Actions</h2>
               <div>
                 <div>
+                  <button
+                    onClick={() => {
+                      setCount(count + 1);
+                    }}
+                    className="btn btn-primary mr-4"
+                  >
+                    Increase Count: {count}
+                  </button>
                   <Link
                     className="btn btn-primary mb-4"
                     to={`/badges/${badge.id}/edit`}
